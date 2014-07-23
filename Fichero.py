@@ -1,20 +1,19 @@
 from Contacto import Contacto
+from Persistence import Persistence
 
-class Fichero(object):
+
+class Fichero(Persistence):
 
     def __init__(self, ruta):
 
         self.ruta = ruta
 
-
     def Guardar(self, contacto):
 
         cadena_contacto = contacto.nombre + "," + contacto.apellido + "," + contacto.telefono
 
-
         try:
-            archivo = open(self.ruta,"a")
-
+            archivo = open(self.ruta, "a")
 
         except IOError:
 
@@ -22,10 +21,8 @@ class Fichero(object):
 
         finally:
 
-            archivo.write(cadena_contacto)
-            archivo.close
-
-
+            archivo.write(cadena_contacto + '\n')
+            archivo.close()
 
     def Listar(self):
 
@@ -33,45 +30,50 @@ class Fichero(object):
 
         try:
 
-            archivo = open(self.ruta,"r")
+            archivo = open(self.ruta, "r")
             while True:
-                linea=archivo.readline()
+                linea = archivo.readline()
                 if not linea:
                     break
                 else:
-                    datos=linea.split(",")
-                    listado.append(Contacto(datos[0],datos[1],datos[2]))
+                    datos = linea.split(",")
+                    listado.append(Contacto(datos[0], datos[1], datos[2]))
+            archivo.close()
 
         except IOError:
-
-            archivo = open(self.ruta, "w")
-
+            print("Error abriendo el archivo")
+            #archivo = open(self.ruta, "w")
 
         finally:
 
-            archivo.close
             return listado
 
-    def buscar(self, argumento_busqueda):
+    def Buscar(self, argumento_busqueda):
 
-            listado=[]
+        listado = []
 
-            archivo = open(self.ruta,"w")
+        try:
+
+            archivo = open(self.ruta, "r")
 
             while True:
                 linea = archivo.readline()
                 if not linea:
                     break
                 else:
-                    datos = linea.slipt(",")
-                    for i in linea:
-                        if i.lower() == argumento_busqueda.lower():
-                            listado.append(Contacto(datos[0],datos[1],datos[2]))
+                    datos = linea.split(",")
+                    for i in datos:
+                        if i.lower() == argumento_busqueda.nombre.lower():
+                            listado.append(Contacto(datos[0], datos[1], datos[2]))
                             break
+            archivo.close()
 
+        except IOError:
+            print("Error abriendo el archivo")
+            #archivo = open(self.ruta, "w")
+
+        finally:
             return listado
-
-
 
 
 
