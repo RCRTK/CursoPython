@@ -73,6 +73,7 @@ class Fichero(Persistence):
             #archivo = open(self.ruta, "w")
 
         finally:
+            
             return listado
 
 
