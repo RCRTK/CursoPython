@@ -25,7 +25,7 @@ class Basededatos(object):
             self.bdcursor.execute("""INSERT INTO contacto values(?,?,?)""",(contacto.nombre,contacto.apellido, contacto.telefono,))
             self.bbdd.commit()
         except:
-            print("error")
+            print("error guardar")
 
 
     def Buscar(self, parametro):
@@ -33,7 +33,10 @@ class Basededatos(object):
         try:
             #self.bbdd = bd.connect(self.ruta)
             #self.bdcursor = self.bbdd.cursor()
-            self.bdcursor.execute("""SELECT * FROM contacto where nombre = ?""",(parametro.nombre,))
+            self.bdcursor.execute("""SELECT * FROM contacto where nombre = ? OR 
+            apellidos = ? OR telefono = ? """,(parametro.nombre,parametro.apellido
+            , parametro.telefono))
+            
             return self.bdcursor.fetchall()
         except:
             print("error")
